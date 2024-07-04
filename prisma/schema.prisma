@@ -1,0 +1,100 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Airport {
+  airportId  Int          @id @default(autoincrement())
+  address    String
+  name       String
+  country    String
+  region     String
+  state      AirportState
+  FlyOrigin  Fly[]        @relation("OriginAirportRelation")
+  FlyDestine Fly[]        @relation("DestineAirportRelation")
+}
+
+model Fly {
+  flyId            Int      @id @default(autoincrement())
+  planeId          Int
+  OriginAirport    Airport  @relation("OriginAirportRelation", fields: [originAirportId], references: [airportId])
+  originAirportId  Int
+  OriginDate       DateTime
+  DestineAirport   Airport  @relation("DestineAirportRelation", fields: [destineAirportId], references: [airportId])
+  destineAirportId Int
+  DestineDate      DateTime
+  state            FlyState
+  Seat             Seat[]
+}
+
+model Seat {
+  seatId     Int       @id @default(autoincrement())
+  flyId      Int
+  Fly        Fly       @relation(fields: [flyId], references: [flyId])
+  seatNumber String
+  price      Float
+  state      SeatState
+}
+
+model Bookings {
+  bookingId   Int          @id @default(autoincrement())
+  passengerId Int
+  Passenger   Passenger    @relation(fields: [passengerId], references: [passengerId])
+  roundFly    String
+  bookInDate  DateTime
+  returnFly   String
+  state       BookingState
+  Ticket      Ticket[]
+}
+
+model Ticket {
+  ticketId     Int      @id @default(autoincrement())
+  bookingId    Int
+  Bookings     Bookings @relation(fields: [bookingId], references: [bookingId])
+  seatNumber   String
+  boardingTime DateTime
+  terminal     String
+  gate         String
+}
+
+model Passenger {
+  passengerId    Int          @id @default(autoincrement())
+  name           String
+  lastname       String
+  documentType   DocumentType
+  documentNumber String
+  phone          String
+  email          String
+  Bookings       Bookings[]
+}
+
+enum AirportState {
+  OPERATIVO
+  FUERA_DE_SERVICIO
+  INACTIVO
+}
+
+enum FlyState {
+  CANCELADO
+  OPERATIVO
+}
+
+enum SeatState {
+  RESERVADO
+  COMPRADO
+  CANCELADO
+}
+
+enum BookingState {
+  RESERVADO
+  CANCELADO
+}
+
+enum DocumentType {
+  DNI
+  CE
+}
