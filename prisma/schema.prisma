@@ -19,16 +19,18 @@ model Airport {
 }
 
 model Fly {
-  flyId            Int      @id @default(autoincrement())
+  flyId            Int        @id @default(autoincrement())
   planeId          Int
-  OriginAirport    Airport  @relation("OriginAirportRelation", fields: [originAirportId], references: [airportId])
+  originAirport    Airport    @relation("OriginAirportRelation", fields: [originAirportId], references: [airportId])
   originAirportId  Int
-  OriginDate       DateTime
-  DestineAirport   Airport  @relation("DestineAirportRelation", fields: [destineAirportId], references: [airportId])
+  originDate       DateTime
+  destineAirport   Airport    @relation("DestineAirportRelation", fields: [destineAirportId], references: [airportId])
   destineAirportId Int
-  DestineDate      DateTime
+  destineDate      DateTime
   state            FlyState
   Seat             Seat[]
+  BookingsRound    Bookings[] @relation("RoundFlyRelation")
+  BookingsReturn   Bookings[] @relation("ReturnFlyRelation")
 }
 
 model Seat {
@@ -44,9 +46,11 @@ model Bookings {
   bookingId   Int          @id @default(autoincrement())
   passengerId Int
   Passenger   Passenger    @relation(fields: [passengerId], references: [passengerId])
-  roundFly    String
+  roundFlyId  Int?
+  roundFly    Fly?         @relation("RoundFlyRelation", fields: [roundFlyId], references: [flyId])
   bookInDate  DateTime
-  returnFly   String
+  returnFlyId Int?
+  returnFly   Fly?         @relation("ReturnFlyRelation", fields: [returnFlyId], references: [flyId])
   state       BookingState
   Ticket      Ticket[]
 }
@@ -86,7 +90,7 @@ enum FlyState {
 enum SeatState {
   RESERVADO
   COMPRADO
-  CANCELADO
+  DISPONIBLE
 }
 
 enum BookingState {

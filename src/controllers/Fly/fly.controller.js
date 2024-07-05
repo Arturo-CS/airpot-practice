@@ -15,13 +15,17 @@ export const createFly = async (req, res) => {
       }
     });
 
-    // Crear 20 asientos para el nuevo vuelo
-    const seats = Array.from({ length: 20 }, (_, i) => ({
-      flyId: newFly.flyId,
-      seatNumber: `A${i + 1}`,
-      price: 100, // Puedes cambiar el precio según sea necesario
-      state: 'RESERVADO'
-    }));
+    // Crear 20 asientos para el nuevo vuelo con precios incrementales
+    const seats = Array.from({ length: 20 }, (_, i) => {
+      const row = Math.floor(i / 2) + 1; // Cada fila tiene 2 asientos
+      const price = 25 + (row - 1) * 5; // Incremento de 5 por cada fila a partir de 25
+      return {
+        flyId: newFly.flyId,
+        seatNumber: `A${i + 1}`,
+        price: price,
+        state: 'DISPONIBLE'
+      };
+    });
 
     await db.seat.createMany({
       data: seats

@@ -5,7 +5,7 @@ CREATE TYPE "AirportState" AS ENUM ('OPERATIVO', 'FUERA_DE_SERVICIO', 'INACTIVO'
 CREATE TYPE "FlyState" AS ENUM ('CANCELADO', 'OPERATIVO');
 
 -- CreateEnum
-CREATE TYPE "SeatState" AS ENUM ('RESERVADO', 'COMPRADO', 'CANCELADO');
+CREATE TYPE "SeatState" AS ENUM ('RESERVADO', 'COMPRADO', 'DISPONIBLE');
 
 -- CreateEnum
 CREATE TYPE "BookingState" AS ENUM ('RESERVADO', 'CANCELADO');
@@ -30,9 +30,9 @@ CREATE TABLE "Fly" (
     "flyId" SERIAL NOT NULL,
     "planeId" INTEGER NOT NULL,
     "originAirportId" INTEGER NOT NULL,
-    "OriginDate" TIMESTAMP(3) NOT NULL,
+    "originDate" TIMESTAMP(3) NOT NULL,
     "destineAirportId" INTEGER NOT NULL,
-    "DestineDate" TIMESTAMP(3) NOT NULL,
+    "destineDate" TIMESTAMP(3) NOT NULL,
     "state" "FlyState" NOT NULL,
 
     CONSTRAINT "Fly_pkey" PRIMARY KEY ("flyId")
