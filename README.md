@@ -6,8 +6,8 @@ Este repositorio desarrolla una base de datos de un caso de aeropuerto, usando t
 
 1. Clone at repository
 
-```js
-function () { return "This code is highlighted as Javascript!"}
+```bash
+git clonne https://github.com/Arturo-CS/airpot-practice/edit/master/README.md
 ```
 
 2. Install dependencys
