@@ -2,7 +2,7 @@
 
 Este repositorio desarrolla una base de datos de un caso de aeropuerto, usando tecnologías como prisma, postgres y express para realizar todo el backend.
 
-# Instalation
+# Installation
 
 1. Clone at repository
 
